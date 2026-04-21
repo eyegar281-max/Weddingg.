@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Wedding Invitation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Cormorant+Garamond:wght@400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Cormorant Garamond',serif;
+background:linear-gradient(#fff5f8,#ffe4ec);
+text-align:center;
+color:#3a1f2d;
+overflow-x:hidden;
+}
+
+/* 🎬 ENTRY */
+#entry{
+position:fixed;
+width:100%;
+height:100%;
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999;
+background:linear-gradient(135deg,#1a0a12,#4a0d2b,#a1004f);
+}
+
+.overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:radial-gradient(circle, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.8) 80%);
+pointer-events:none; /* ✅ FIX */
+}
+
+.cinema-text{
+position:relative;
+z-index:2;
+text-align:center;
+color:white;
+}
+
+.title{
+font-family:'Great Vibes',cursive;
+font-size:60px;
+opacity:0;
+animation:zoomFade 3s forwards;
+text-shadow:0 0 20px rgba(255,105,180,0.6);
+}
+
+.tagline{
+letter-spacing:3px;
+font-size:18px;
+opacity:0;
+animation:fadeIn 4s forwards;
+}
+
+#entry button{
+margin-top:25px;
+padding:12px 30px;
+background:linear-gradient(45deg,#a1004f,#d63384);
+border:none;
+color:white;
+border-radius:30px;
+opacity:0;
+animation:fadeIn 5s forwards;
+cursor:pointer;
+}
+
+@keyframes zoomFade{
+0%{transform:scale(0.7);opacity:0;}
+100%{transform:scale(1);opacity:1;}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+/* 🌸 PETALS */
+.petal{
+position:fixed;
+top:-10px;
+font-size:18px;
+animation:fall linear infinite;
+}
+@keyframes fall{
+to{transform:translateY(100vh) rotate(360deg);}
+}
+
+/* TEXT */
+h1{
+font-family:'Great Vibes',cursive;
+font-size:54px;
+color:#a1004f;
+}
+
+.names{
+font-family:'Playfair Display',serif;
+font-size:36px;
+letter-spacing:2px;
+color:#8b0045;
+}
+
+/* CARD */
+.card{
+background:rgba(255,255,255,0.7);
+border-radius:20px;
+padding:20px;
+margin:15px auto;
+max-width:520px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+p{
+font-size:17px;
+line-height:1.6;
+}
+
+/* SCROLL */
+.hidden{opacity:0;transform:translateY(30px);transition:1s;}
+.show{opacity:1;transform:translateY(0);}
+
+/* SCRATCH */
+.scratch{
+width:260px;height:110px;
+margin:15px auto;
+background:silver;
+color:transparent;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+}
+.reveal{
+background:#fff;
+color:#a1004f;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎬 ENTRY -->
+<div id="entry">
+<div class="overlay"></div>
+
+<div class="cinema-text">
+<h1 class="title">Satyam ❤️ Ankita</h1>
+<p class="tagline">Two Souls • One Journey</p>
+<button onclick="start()">Enter</button>
+</div>
+</div>
+
+<audio id="music" loop>
+<source src="music.mp3">
+</audio>
+
+<div class="container">
+
+<h1 class="hidden">Wedding Invitation</h1>
+<div class="names hidden">Satyam weds Ankita</div>
+
+<div class="card hidden">
+<b>Groom</b>
+<p>Satyam Singh</p>
+<p>S/o Mr. Satyendra Pr. Singh & Mrs. Munni Devi</p>
+</div>
+
+<div class="card hidden">
+<b>Bride</b>
+<p>Ankita Singh</p>
+<p>D/o Mr. Praveen Kr. Singh & Mrs. Riva Devi</p>
+</div>
+
+<div class="card hidden">
+<b>Tap to Reveal Wedding Date</b>
+<div class="scratch" onclick="this.classList.add('reveal')">
+30 April 2026
+</div>
+</div>
+
+<div class="card hidden">
+<b>Functions</b>
+<p>Tilak: 23 April 2026, 9 PM (At Our Palace)</p>
+<p>Haldi: 27 April 2026, 6 PM (At Our Palace)</p>
+<p>Mehendi: 28 April 2026, 6 PM (At Our Palace)</p>
+<p>Sangeet: 28 April 2026, 9 PM (At Our Palace)</p>
+</div>
+
+<div class="card hidden">
+<b>Wedding</b>
+<p>30 April 2026</p>
+<p>Shahjadpur, Bhagalpur, Bihar</p>
+</div>
+
+<div id="timer"></div>
+
+<div class="card hidden">
+<b>Reception</b>
+<p>At Our Palace</p>
+<p>Karjain Bazar, Supaul (Bihar)</p>
+<p>Pincode: 852215</p>
+</div>
+
+</div>
+
+<script>
+function start(){
+document.getElementById("entry").style.display="none";
+
+let music=document.getElementById("music");
+music.volume=0;
+music.play();
+
+let v=0;
+let fade=setInterval(()=>{
+if(v<1){
+v+=0.05;
+music.volume=v;
+}else clearInterval(fade);
+},200);
+}
+
+/* petals */
+setInterval(()=>{
+let p=document.createElement("div");
+p.innerHTML="🌸";
+p.className="petal";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=(3+Math.random()*5)+"s";
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),8000);
+},300);
+
+/* scroll */
+const obs=new IntersectionObserver(e=>{
+e.forEach(x=>{
+if(x.isIntersecting)x.target.classList.add("show");
+});
+});
+document.querySelectorAll('.hidden').forEach(el=>obs.observe(el));
+
+/* timer */
+let d=new Date("April 30, 2026").getTime();
+setInterval(()=>{
+let now=new Date().getTime();
+let t=d-now;
+let days=Math.floor(t/(1000*60*60*24));
+let h=Math.floor((t/(1000*60*60))%24);
+let m=Math.floor((t/(1000*60))%60);
+let s=Math.floor((t/(1000)%60));
+document.getElementById("timer").innerHTML="⏳ "+days+" Days "+h+" Hours "+m+" Min "+s+" Sec";
+},1000);
+</script>
+
+</body>
+</html>
